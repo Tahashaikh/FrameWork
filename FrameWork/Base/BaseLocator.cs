@@ -16,7 +16,6 @@ namespace FrameWork.Base
             InitElements(DriverContext.Driver,this );
             LogHelper.Write("PageFactory Initialized");
         }
-
         public static partial class PageInit
         {
             #region Reg PAGE OBJECT
@@ -39,6 +38,5 @@ namespace FrameWork.Base
 
             #endregion
         }
-
     }
 }

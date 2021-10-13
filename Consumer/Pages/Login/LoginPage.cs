@@ -12,14 +12,19 @@ namespace Consumer.Pages.Login
 
         
         public static void Login()
-        {
-            LoginLocators loginLocators = new LoginLocators();
+        {/*
+            EnterText(LoginLocators.Username,"admin");
+            EnterText(LoginLocators.Password,"admin");
+            ClickElement(LoginLocators.Username);
+*/
+                 LoginLocators loginLocators = new LoginLocators();
+     
+                 loginLocators.Username2.SendKeys("admin");
+     
+                 loginLocators.Password2.SendKeys("admin");
 
-            loginLocators.Username.SendKeys("admin");
+                 loginLocators.LoginButton2.Click();
 
-            loginLocators.Password.SendKeys("admin");
-
-            loginLocators.LoginButton.Click();
         }
     }
 }

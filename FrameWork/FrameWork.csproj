@@ -448,6 +448,7 @@
     <Compile Include="BrowserDriver\Browser.cs" />
     <Compile Include="BrowserDriver\DriverContext.cs" />
     <Compile Include="Config\ConfigInitialization.cs" />
+    <Compile Include="Extentions\WebDriverExtensions.cs" />
     <Compile Include="Helper\DirectoryHelper.cs" />
     <Compile Include="Helper\ExtentReportsHelper.cs" />
     <Compile Include="Helper\LogHelper.cs" />

@@ -1,152 +1,158 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FrameWork.BrowserDriver;
+using FrameWork.Extentions;
 using FrameWork.Helper;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 
 namespace FrameWork.Base
 {
     public class BaseFrameWork
     {
-        private readonly IWebDriver _driver = DriverContext.Driver;
 
-        private void StaticWait(int waitTime)
+        private static void StaticWait(int waitTime)
         {
             Thread.Sleep(waitTime);
         }
 
-        private IWebElement WaitForElement(By by, int timeInSeconds = 30)
+        public static void EnterText(IWebElement element, string setValue, int timeToReadyElement = 30 )
         {
-            IWebElement element = null;
-            try
-            {
-                if (_driver != null)
-                {
-                    WebDriverWait wait = new WebDriverWait(_driver, new TimeSpan(0, 0, timeInSeconds))
-                    {
-                        Timeout = TimeSpan.FromSeconds(timeInSeconds),
-                        PollingInterval = TimeSpan.FromMilliseconds(100)
-                    };
-                    wait.IgnoreExceptionTypes(typeof(NoSuchElementException),
-                        typeof(ElementNotInteractableException),
-                        typeof(ElementClickInterceptedException),
-                        typeof(ElementNotVisibleException),
-                        typeof(StaleElementReferenceException),
-                        typeof(ElementNotSelectableException));
-
-                    wait.Until(driver => IsPageReady(driver));
-                    wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.PresenceOfAllElementsLocatedBy(by));
-                    wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.VisibilityOfAllElementsLocatedBy(by));
-                    wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
-                    wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(by));
-                }
-
-                if (_driver != null) element = _driver.FindElement(by);
-            }
-            catch (Exception e)
-            {
-                LogHelper.Write("[Element Not Found] " + by.ToString());
-            }
-            return element;
-        }
-
-        public Boolean IsPageReady(IWebDriver driver, int timeoutSec = 15)
-        {
-            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
-            WebDriverWait wait = new WebDriverWait(driver, new TimeSpan(0, 0, timeoutSec));
-            return wait.Until(wd => js.ExecuteScript("return document.readyState").ToString() == "complete");
-        }
-
-        public void EnterText(By by, string setValue, int timeToReadyElement = 1, bool isCaptureScreenShot = false)
-        {
+            WebDriverExtensions.WaitForPageLoaded(DriverContext.Driver);
             try
             {
 
-                IWebElement element = WaitForElement(by);
-                if (element.Displayed == false)
+               
+                if (element.Displayed == false || element.Enabled == false)
                 {
-                    StaticWait(300);
+                    StaticWait(500);
                 }
-
-                if (element.Enabled == false)
-                {
-                    StaticWait(1000);
-                }
-
                 element.SendKeys(setValue);
 
 
-                ExtentReportsHelper.SetStepStatusWarning("Element :" + by + "  Element Value:" + setValue);
-                LogHelper.Write("[Text Entered] in Element: " + by.ToString() + "| Data Entered:" + setValue);
+                ExtentReportsHelper.SetStepStatusWarning("Element :" + element + "  Element Value:" + setValue);
+                LogHelper.Write("[Text Entered] in Element: " + element.ToString() + "| Data Entered:" + setValue);
             }
             catch (Exception ex) // Element Not found
             {
-                ExtentReportsHelper.SetStepStatusWarning(by + "[" + setValue + ": Not Performed] [Exception: " + ex.ToString() + "]");
-                LogHelper.Write("Element Not Found " + by.ToString());
+                ExtentReportsHelper.SetStepStatusWarning(element + "[" + setValue + ": Not Performed] [Exception: " + ex.ToString() + "]");
+                LogHelper.Write("Element Not Found " + element.ToString());
             }
         }
 
-
-        public void ClickElement(By by, int waitForElementTobeclickable = 30)
+        public static void ClickElement(IWebElement element, int waitForElementToBeClickAble = 30)
         {
-            IWebElement element = WaitForElement(by, waitForElementTobeclickable);
-
-
-            Func<IWebDriver, bool> IsClicked()
+            WebDriverExtensions.WaitForPageLoaded(DriverContext.Driver);
+            void ClickedCheck()
             {
-                return (Func<IWebDriver, bool>)(driver =>
+                var elementClicked = true;
+                while (elementClicked)
                 {
                     try
                     {
-                        if (!element.Displayed || !element.Enabled)
+                        if (element.Enabled && element.Displayed)
                         {
-                            StaticWait(200);
+                            element.Click();
+                            elementClicked = false;
                         }
-                        element.Click();
-                        return true;
-
                     }
-                    catch
+                    catch (ElementClickInterceptedException)
                     {
-                        return false;
+                        LogHelper.Write("ClickedCheck : unable to click on element ElementClickInterceptedException");
+                        elementClicked = true;
                     }
-
-                });
+                    catch (StaleElementReferenceException)
+                    {
+                        LogHelper.Write("ClickedCheck : unable to click on element StaleElementException");
+                        elementClicked = true;
+                    }
+                }
             }
-
             try
             {
-
-                WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(30))
-                {
-                    Timeout = TimeSpan.FromSeconds(30),
-                    PollingInterval = TimeSpan.FromMilliseconds(150)
-                };
-                wait.IgnoreExceptionTypes(typeof(NoSuchElementException),
-                    typeof(ElementNotInteractableException),
-                    typeof(ElementClickInterceptedException),
-                    typeof(ElementNotVisibleException),
-                    typeof(StaleElementReferenceException),
-                    typeof(ElementNotSelectableException));
-                wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
-                wait.Until(IsClicked());
-
-                LogHelper.Write("[Element Clicked] " + by.ToString());
-                ExtentReportsHelper.SetStepStatusError(by + "ClickElement");
-
+                WebDriverWait wait = new WebDriverWait(DriverContext.Driver, TimeSpan.FromSeconds(30));
+                wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(element));
+                ClickedCheck();
+                LogHelper.Write("[Element Clicked] " + element.ToString());
+                ExtentReportsHelper.SetStepStatusError(element + "ClickElement");
             }
 
             catch (Exception ex)
             {
-                LogHelper.Write("[Element Not Found ]" + by.ToString());
+                LogHelper.Write("[Element Not Clicked ]" + element +"Exception :" +ex); 
                 throw ex;
             }
         }
+
+
+        public static void SelectDropDownList(IWebElement element, string value)
+        {
+            WebDriverExtensions.WaitForPageLoaded(DriverContext.Driver);
+            SelectElement ddl = new SelectElement(element);
+            ddl.SelectByText(value);
+        }
+
+        public static IList<IWebElement> GetAllSelectedOptions(IWebElement element)
+        {
+            WebDriverExtensions.WaitForPageLoaded(DriverContext.Driver);
+            SelectElement ddl = new SelectElement(element);
+            return ddl.AllSelectedOptions;
+        }
+
+        public static string GetFirstSelectedDropDown(IWebElement element)
+        {
+            WebDriverExtensions.WaitForPageLoaded(DriverContext.Driver);
+            SelectElement ddl = new SelectElement(element);
+            return ddl.AllSelectedOptions.First().ToString();
+        }
+
+        public static string GetLinkText(IWebElement element)
+        {
+            WebDriverExtensions.WaitForPageLoaded(DriverContext.Driver);
+            return element.Text;
+        }
+
+        public static void AssertElementPresence(IWebElement element)
+        {
+            if (!(element.Displayed))
+            {
+                throw new Exception(string.Format("Element Not Present exception"));
+            }
+        }
+
+
+        public static void Hover(IWebElement element)
+        {
+            WebDriverExtensions.WaitForPageLoaded(DriverContext.Driver);
+            Actions actions = new Actions(DriverContext.Driver);
+            actions.MoveToElement(element).Perform();
+        }
+
+        public static bool IsElementPresent(IWebElement element)
+        {
+            WebDriverExtensions.WaitForPageLoaded(DriverContext.Driver);
+            bool result = false;
+            try
+            {
+                if (element.Displayed)
+                    return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+                throw;
+            }
+            return result;
+        }
+
+
+
 
     }
 }

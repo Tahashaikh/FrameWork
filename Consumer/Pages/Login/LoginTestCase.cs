@@ -21,7 +21,7 @@ namespace Consumer.Pages.Login
         [Test, Category("First")]
         public void LaunchAndLogin()
         {
-         LoginPage.Login();
+            LoginPage.Login();
         }
 
         [Test, Category("2nd")]

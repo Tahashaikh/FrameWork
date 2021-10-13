@@ -8,5 +8,6 @@ namespace FrameWork.Helper
 {
     public class UniversalHelper
     {
+        
     }
 }

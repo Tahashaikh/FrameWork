@@ -38,8 +38,7 @@ namespace FrameWork.Base
         {
             ExtentReportsHelper.CreateTest(TestContext.CurrentContext.Test.ClassName+" / "+TestContext.CurrentContext.Test.Name);
             Browser.OpenBrowser(ConfigInitialization.GetExecutionBrowser());
-            Browser.GoToUrl(ConfigInitialization.GetAppUrl());
-            BaseLocator.PageInit.BaseLocator = new BaseLocator();
+            Browser.GoToUrl(ConfigInitialization.GetAppUrl()); 
             LogHelper.Write("Test Initialization Start");
         }
 
