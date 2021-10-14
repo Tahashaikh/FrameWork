@@ -4,10 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using AventStack.ExtentReports.Model;
 using FrameWork.BrowserDriver;
 using FrameWork.Config;
+using FrameWork.Extentions;
 using FrameWork.Helper;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
@@ -15,7 +17,7 @@ using NUnit.Framework.Interfaces;
 namespace FrameWork.Base
 {
     
-    public class BaseTestCase : BaseFrameWork
+    public class TestCase :Base
 
     {
 
@@ -37,9 +39,11 @@ namespace FrameWork.Base
         public void StartUpTest()
         {
             ExtentReportsHelper.CreateTest(TestContext.CurrentContext.Test.ClassName+" / "+TestContext.CurrentContext.Test.Name);
+            LogHelper.Write("Test Created in Extent Report");
             Browser.OpenBrowser(ConfigInitialization.GetExecutionBrowser());
             Browser.GoToUrl(ConfigInitialization.GetAppUrl()); 
             LogHelper.Write("Test Initialization Start");
+            StaticWait(2000);
         }
 
         [TearDown]

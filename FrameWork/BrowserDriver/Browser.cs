@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FrameWork.Base;
+using FrameWork.Config;
 using FrameWork.Helper;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -43,8 +44,8 @@ namespace FrameWork.BrowserDriver
                     LogHelper.Write("Preparing Browser to Run");
                     DriverContext.Driver.Manage().Window.Maximize();
                     DriverContext.Driver.Manage().Cookies.DeleteAllCookies();
-                    DriverContext.Driver.Manage().Timeouts().PageLoad = TimeSpan.FromMinutes(0.1);
-                    DriverContext.Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMinutes(0.1);
+                    DriverContext.Driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(30);
+                    DriverContext.Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMinutes(30);
                     LogHelper.Write("Browser Window Maximized");
 
                 }

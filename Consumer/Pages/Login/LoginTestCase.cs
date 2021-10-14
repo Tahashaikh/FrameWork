@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace Consumer.Pages.Login
 {
     [TestFixture]
-    public class LoginTestCase : BaseTestCase
+    public class LoginTestCase : TestCase
     {   
 
 
@@ -24,20 +24,6 @@ namespace Consumer.Pages.Login
             LoginPage.Login();
         }
 
-        [Test, Category("2nd")]
-        public  void Test()
-
-        {
-            LogHelper.Write("Test Started");
-        //    LoginTest.LaunchAndLogin();
-            Assert.AreEqual("Test", "Test");
-        }
-        [Test, Category("3rd")]
-        public  void DriCheck()
-
-        {
-            Assert.AreEqual("Test", "Test2");
-        }
 
     }
 }

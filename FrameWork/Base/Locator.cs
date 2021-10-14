@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FrameWork.BrowserDriver;
+using FrameWork.Extentions;
 using FrameWork.Helper;
 using static OpenQA.Selenium.Support.PageObjects.PageFactory;
 
 namespace FrameWork.Base
 {
-    public class BaseLocator : BaseFrameWork
+    public class Locator : Base
     {
-        public BaseLocator()
+        public Locator()
         {
             InitElements(DriverContext.Driver,this );
             LogHelper.Write("PageFactory Initialized");
@@ -20,14 +21,14 @@ namespace FrameWork.Base
         {
             #region Reg PAGE OBJECT
 
-            private static BaseLocator _baseLocator;
-            public static BaseLocator BaseLocator
+            private static Locator _baseLocator;
+            public static Locator BaseLocator
             {
                 get
                 {
                     if (_baseLocator == null)
                     {
-                        _baseLocator = new BaseLocator();
+                        _baseLocator = new Locator();
                     }
 
                     return _baseLocator;

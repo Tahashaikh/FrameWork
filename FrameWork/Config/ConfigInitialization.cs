@@ -27,6 +27,12 @@ namespace FrameWork.Config
             LogHelper.Write("Getting Environment Type From Config");
             return ConfigurationManager.AppSettings["Environment"];
         }
+        public static string ImplicitWaitValue()
+        {
+            LogHelper.Write("Getting Environment Type From Config");
+            return ConfigurationManager.AppSettings["ImplicitWaitAndPageLoad_inSeconds"];
+        }
 
     }
 }
+

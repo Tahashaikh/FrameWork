@@ -11,17 +11,7 @@ namespace FrameWork.Extentions
 {
     public static class WebDriverExtensions
     {
-        public static void WaitForPageLoaded(this IWebDriver driver)
-        {
-            driver.WaitForCondition(dri =>
-            {
 
-                string state = dri.ExecuteJs("return document.readystate").ToString();
-                return state == "complete";
-
-            }, 10);
-
-        }
 
         private static void WaitForCondition<T>(this T obj, Func<T, bool> condition, int timeout)
         {

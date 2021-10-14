@@ -46,8 +46,15 @@ namespace FrameWork.Helper
        
         public static void CreateTest(string testName)
         {
-            if (GetTestCategory() != null) test = Extent.CreateTest(testName).AssignCategory(GetTestCategory());
-            test = Extent.CreateTest(testName);
+            if (GetTestCategory() != null)
+            {
+                test = Extent.CreateTest(testName).AssignCategory(GetTestCategory());
+            }
+            else
+            {
+                test = Extent.CreateTest(testName);
+            }
+           
         }
 
         public static void SetStepStatusPass(string stepDescription)
