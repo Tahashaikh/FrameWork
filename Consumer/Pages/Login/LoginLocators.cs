@@ -3,10 +3,12 @@ using System.Diagnostics;
 using OpenQA.Selenium;
 using FrameWork.Base;
 using FrameWork.BrowserDriver;
+using NUnit.Framework;
 using static FrameWork.Extentions.WebElementExtentions;
     
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
+using RazorEngine.Compilation.ImpromptuInterface.Dynamic;
 using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
 
 
@@ -14,8 +16,19 @@ namespace Consumer.Pages.Login
 {
     public class LoginLocators : Locator
     {
+        [FindsBy(How = How.Name, Using = "password", Priority = 0)]
+        [FindsBy(How = How.Id, Using = "Tst", Priority = 1)]
+        public IWebElement Username2 { get; set; }
 
-    
+        [FindsBy(How = How.Name, Using = "password", Priority = 0)]
+        [FindsBy(How = How.Id, Using = "Tst", Priority = 1)]
+        public IWebElement Password2 { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//button[@aria-label='Login button']")]
+        public IWebElement LoginButton2 { get; set; }
+
+
+
     }
 
 

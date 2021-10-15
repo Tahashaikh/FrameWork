@@ -453,6 +453,7 @@
     <Compile Include="Config\ConfigInitialization.cs" />
     <Compile Include="Extentions\WebDriverExtensions.cs" />
     <Compile Include="Extentions\WebElementExtentions.cs" />
+    <Compile Include="Helper\ConditionsHelper.cs" />
     <Compile Include="Helper\DirectoryHelper.cs" />
     <Compile Include="Helper\ExtentReportsHelper.cs" />
     <Compile Include="Helper\LogHelper.cs" />

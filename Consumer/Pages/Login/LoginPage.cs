@@ -10,17 +10,16 @@ namespace Consumer.Pages.Login
 {
    public class LoginPage :Page
     {
+        static LoginLocators loginLocators = new LoginLocators();
 
-        
         public static void Login()
         {
-            LoginLocators loginLocators = new LoginLocators();
-         /*   WebDriverWait wait = new WebDriverWait(DriverContext.Driver, TimeSpan.FromSeconds(30));
-            wait.Until(driver => loginLocators.IsClicked(loginLocators.Username2));*/
-            EnterText(loginLocators.Username2, "admin", 10);
-            EnterText(loginLocators.Password2, "admin", 10);
-            ClickElement(loginLocators.LoginButton2, 10);
-      
+            loginLocators.Username2.SendKeys("admin");
+
+            loginLocators.Password2.SendKeys("admin");
+
+            loginLocators.LoginButton2.Click();
+
         }
     }
 }
