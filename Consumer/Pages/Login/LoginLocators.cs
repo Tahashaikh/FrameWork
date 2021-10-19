@@ -16,16 +16,25 @@ namespace Consumer.Pages.Login
 {
     public class LoginLocators : Locator
     {
-        [FindsBy(How = How.Name, Using = "password", Priority = 0)]
-        [FindsBy(How = How.Id, Using = "Tst", Priority = 1)]
-        public IWebElement Username2 { get; set; }
 
-        [FindsBy(How = How.Name, Using = "password", Priority = 0)]
-        [FindsBy(How = How.Id, Using = "Tst", Priority = 1)]
-        public IWebElement Password2 { get; set; }
+
+        [FindsBy(How = How.Name, Using = "user1", Priority = 0)]
+        [FindsBy(How = How.XPath, Using = "//input[@placeholder='email or username']", Priority = 1)]
+        public IWebElement Username2;
+        
+
+
+        [FindsBy(How = How.Name, Using = "password", Priority = 0)] [FindsBy(How = How.Id, Using = "Tst", Priority = 1)]
+        public IWebElement Password2;
 
         [FindsBy(How = How.XPath, Using = "//button[@aria-label='Login button']")]
-        public IWebElement LoginButton2 { get; set; }
+        public IWebElement LoginButton2;
+
+
+
+
+
+
 
 
 

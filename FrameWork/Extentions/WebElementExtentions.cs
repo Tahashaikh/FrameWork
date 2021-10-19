@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Akka.Pattern;
 using FrameWork.BrowserDriver;
 using FrameWork.Helper;
 using OpenQA.Selenium;
@@ -17,39 +18,48 @@ namespace FrameWork.Extentions
 {
     public class WebElementExtentions
     {
-
-        private IWebElement WaitforElement(IWebElement element, double timeInSeconds, int timeToReadyElement = 0)
+        private By getByFromElement(IWebElementWebElement element)
         {
-            int i = timeToReadyElement + (int)timeInSeconds;
-           
-            try
-            {
-                if (timeToReadyElement != 0 && timeToReadyElement.ToString() != null)
-                {
-                    WebDriverWait wait = new WebDriverWait(DriverContext.Driver, TimeSpan.FromSeconds(i));
-                    wait.Message = "Element not Found";
-                    wait.Timeout = TimeSpan.FromSeconds(i);
-                    wait.PollingInterval = TimeSpan.FromMilliseconds(300);
-                    
-                    wait.IgnoreExceptionTypes(typeof(NoSuchElementException),
-                        typeof(ElementNotInteractableException),
-                        typeof(ElementClickInterceptedException),
-                        typeof(ElementNotVisibleException),
-                        typeof(StaleElementReferenceException),
-                        typeof(ElementNotSelectableException));
-               
-                    
-                    wait.Until(ConditionsHelper.ElementIsVisible(element));
-                  
+            By by = null;
+            //[[ChromeDriver: chrome on XP (d85e7e220b2ec51b7faf42210816285e)] -> xpath: //input[@title='Search']]
+            String[] pathVariables = (element.toString().split("->")[1].replaceFirst("(?s)(.*)\\]", "$1" + "")).split(":");
 
-                }
+            String selector = pathVariables[0].Trim();
+            String value = pathVariables[1].Trim();
 
-            }
-            catch (Exception e)
+            switch (selector)
             {
-                LogHelper.Write("[Element Not Found] " + element.Text.ToString());
+                case "id":
+                    by = By.Id(value);
+                    break;
+                case "className":
+                    by = By.ClassName(value);
+                    break;
+                case "tagName":
+                    by = By.TagName(value);
+                    break;
+                case "xpath":
+                    by = By.XPath(value);
+                    break;
+                case "cssSelector":
+                    by = By.CssSelector(value);
+                    break;
+                case "linkText":
+                    by = By.LinkText(value);
+                    break;
+                case "name":
+                    by = By.Name(value);
+                    break;
+                case "partialLinkText":
+                    by = By.PartialLinkText(value);
+                    break;
+                default:
+                    throw new IllegalStateException("locator : " + selector + " not found!!!");
             }
-            return element;
+            return by;
         }
+
+
+
     }
 }

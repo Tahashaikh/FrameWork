@@ -25,5 +25,12 @@ namespace Consumer.Pages.Login
         }
 
 
+
+        [Test, Category("First")]
+        public void LaunchAndLogin2()
+        {
+            LoginPage.Login2();
+        }
+
     }
 }

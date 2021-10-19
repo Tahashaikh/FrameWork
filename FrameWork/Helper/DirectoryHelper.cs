@@ -19,27 +19,18 @@ namespace FrameWork.Helper
 
         public void CreateLogFolder()
         {
-            try
-            {
 
-                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                UriBuilder uri = new UriBuilder(codeBase);
-                string path = Uri.UnescapeDataString(uri.Path);
-                DirectoryInfo directoryInfo = System.IO.Directory.GetParent(path).Parent.Parent.Parent.Parent;
-                string dir = directoryInfo.FullName;
-                //string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
-               // string dir = @"D:\TestAutomationFrameWork\TestFrameWork";
-               CurrentFolder = CurrentDateTime;
-                string directory = dir + @"\ExecutionLogs\" + CurrentFolder + @"\";
-                LogFolderDir = directory;
-                Directory.CreateDirectory(LogFolderDir);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
 
+            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+            UriBuilder uri = new UriBuilder(codeBase);
+            string path = Uri.UnescapeDataString(uri.Path);
+            DirectoryInfo directoryInfo = System.IO.Directory.GetParent(path).Parent.Parent.Parent.Parent;
+            string dir = directoryInfo.FullName;
+            CurrentFolder = CurrentDateTime;
+            string directory = dir + @"\ExecutionLogs\" + CurrentFolder + @"\";
+            LogFolderDir = directory;
+            Directory.CreateDirectory(LogFolderDir);
         }
+
     }
 }

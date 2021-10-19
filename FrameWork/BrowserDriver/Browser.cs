@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using FrameWork.Base;
 using FrameWork.Config;
@@ -45,7 +47,8 @@ namespace FrameWork.BrowserDriver
                     DriverContext.Driver.Manage().Window.Maximize();
                     DriverContext.Driver.Manage().Cookies.DeleteAllCookies();
                     DriverContext.Driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(30);
-                    DriverContext.Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMinutes(30);
+                    DriverContext.Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(0);
+                    //Thread.Sleep(TimeSpan.FromSeconds(5));
                     LogHelper.Write("Browser Window Maximized");
 
                 }
@@ -76,7 +79,9 @@ namespace FrameWork.BrowserDriver
                 case "Chrome":
                     try
                     {
-                        DriverContext.Driver = new ChromeDriver();
+                        ChromeOptions options = new ChromeOptions();
+                        options.AddArgument("no-sandbox");
+                        DriverContext.Driver = new ChromeDriver(ChromeDriverService.CreateDefaultService(), options, TimeSpan.FromSeconds(120));
                         DriverContext.Browser = new Browser(DriverContext.Driver);
                         LogHelper.Write("Browser Initialize Success " + BrowserType);
                     }

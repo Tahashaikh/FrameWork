@@ -27,11 +27,23 @@ namespace FrameWork.Base
         [OneTimeSetUp]
         public void SetUpReporter()
         {
-            
-            new DirectoryHelper().CreateLogFolder();
-            new LogHelper().CreateLogFile();
-            Extent = new ExtentReportsHelper(ConfigInitialization.GetApplicationName(),ConfigInitialization.GetEnvironment());
-            LogHelper.Write("Assembly Initialized");
+
+            try
+            {
+                DirectoryHelper directoryHelper = new DirectoryHelper(); directoryHelper.CreateLogFolder();
+                new LogHelper().CreateLogFile();
+                Extent = new ExtentReportsHelper(ConfigInitialization.GetApplicationName(), ConfigInitialization.GetEnvironment());
+                LogHelper.Write("Assembly Initialized");
+            }
+            catch (Exception e)
+            {
+                var inner = e.InnerException;
+                while (inner != null)
+                {
+                    LogHelper.Write("Exception one Time Setup"+e.Message+"/n"+e.StackTrace);
+                }
+                throw e;
+            }
 
         }
 
@@ -43,7 +55,7 @@ namespace FrameWork.Base
             Browser.OpenBrowser(ConfigInitialization.GetExecutionBrowser());
             Browser.GoToUrl(ConfigInitialization.GetAppUrl()); 
             LogHelper.Write("Test Initialization Start");
-            StaticWait(2000);
+            Thread.Sleep(TimeSpan.FromSeconds(10));
         }
 
         [TearDown]
@@ -71,13 +83,12 @@ namespace FrameWork.Base
             catch (Exception e)
             {
                 LogHelper.Write("TearDown Exception :" + e);
-                throw (e);
+                throw;
                 
             }
             finally
             {
                 ExtentReportsHelper.Close();
-                LogHelper.FlushLogFiles();
                 DriverContext.Driver.Close();
             }
         }
@@ -87,15 +98,17 @@ namespace FrameWork.Base
             LogHelper.Write("Executing One time Tear down");
             try
             {
-               if(DriverContext.Driver  != null){
-
-                   DriverContext.Driver.Quit();
-                   DriverContext.Driver.Dispose();
-               }
+                DriverContext.Driver.Close();
+                DriverContext.Driver.Quit();
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                throw e;
+                throw exception;
+            }
+            finally
+            {
+                DriverContext.Driver.Dispose();
+                LogHelper.FlushLogFiles();
             }
             LogHelper.Write("Assembly CleanUp");
             LogHelper.CloseLogFile();
