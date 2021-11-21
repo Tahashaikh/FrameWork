@@ -18,11 +18,9 @@ namespace Consumer.Pages.Login
     {
 
 
-        [FindsBy(How = How.Name, Using = "user1", Priority = 0)]
+        //[FindsBy(How = How.Name, Using = "user1", Priority = 0)]
         [FindsBy(How = How.XPath, Using = "//input[@placeholder='email or username']", Priority = 1)]
         public IWebElement Username2;
-        
-
 
         [FindsBy(How = How.Name, Using = "password", Priority = 0)] [FindsBy(How = How.Id, Using = "Tst", Priority = 1)]
         public IWebElement Password2;

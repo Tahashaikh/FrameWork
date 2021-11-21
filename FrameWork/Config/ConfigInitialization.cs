@@ -32,6 +32,11 @@ namespace FrameWork.Config
             LogHelper.Write("Getting Environment Type From Config");
             return ConfigurationManager.AppSettings["ImplicitWaitAndPageLoad_inSeconds"];
         }
+        public static string GetBatchName()
+        {
+            LogHelper.Write("Getting BatchName");
+            return ConfigurationManager.AppSettings["EyeBatchName"];
+        }
 
     }
 }

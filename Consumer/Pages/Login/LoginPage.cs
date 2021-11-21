@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
+using Applitools.Selenium;
 using FrameWork.Base;
 using FrameWork.BrowserDriver;
+using FrameWork.Config;
 using FrameWork.Extentions;
 using FrameWork.Helper;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using Selenium.WebDriver.WaitExtensions;
@@ -15,32 +20,37 @@ namespace Consumer.Pages.Login
 {
    public class LoginPage :Page
     {
-        static LoginLocators loginLocators = new LoginLocators();
-        private static IWebDriver driver = DriverContext.Driver;
+       
+   
 
         public static void Login()
         
         {
+            LoginLocators loginLocators = new LoginLocators(); 
+            EyeHelper.eyes.Check(Target.Window().Fully().WithName("Login Screen"));
             loginLocators.Username2.SendKeys("admin");
             Thread.Sleep(2000);
             loginLocators.Password2.SendKeys("admin");
             Thread.Sleep(2000);
             loginLocators.LoginButton2.Click();
             Thread.Sleep(2000);
-
-           /* driver.WaitforElement(loginLocators.Username2,30).SendKeys("admin");
-          driver.WaitforElement(loginLocators.Password2,30).SendKeys("admin");
-          driver.WaitforElement(loginLocators.LoginButton2,30).Click();*/
+            EyeHelper.eyes.Check(Target.Window().Fully().WithName("ReEnterPassword"));
 
         }
 
 
-        public static void Login2()
+        public static void Login2nd()
 
         {
-            driver.EnterText(loginLocators.Username2,"admin",5);
-            driver.EnterText(loginLocators.Password2,"admin",5);
-            driver.Click(loginLocators.LoginButton2,5);
+            LoginLocators loginLocators = new LoginLocators();
+            EyeHelper.eyes.Check(Target.Window().Fully().WithName("Login Screen2"));
+            loginLocators.Username2.SendKeys("admin");
+            Thread.Sleep(2000);
+            loginLocators.Password2.SendKeys("admin");
+            Thread.Sleep(2000);
+            loginLocators.LoginButton2.Click();
+            Thread.Sleep(2000);
+             EyeHelper.eyes.Check(Target.Window().Fully().WithName("ReEnterPassword2"));
 
         }
     }

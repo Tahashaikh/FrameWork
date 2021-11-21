@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FrameWork.Base;
+using FrameWork.BrowserDriver;
+using FrameWork.Config;
 using FrameWork.Helper;
 using NUnit.Framework;
 
@@ -22,14 +24,16 @@ namespace Consumer.Pages.Login
         public void LaunchAndLogin()
         {
             LoginPage.Login();
-        }
+        
+         }
 
 
 
         [Test, Category("First")]
-        public void LaunchAndLogin2()
+        public void LaunchAndLogin2nd()
         {
-            LoginPage.Login2();
+            //LoginPage.Login();
+            LoginPage.Login2nd();
         }
 
     }

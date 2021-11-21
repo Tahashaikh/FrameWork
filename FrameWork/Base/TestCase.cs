@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -53,6 +54,8 @@ namespace FrameWork.Base
             ExtentReportsHelper.CreateTest(TestContext.CurrentContext.Test.ClassName+" / "+TestContext.CurrentContext.Test.Name);
             LogHelper.Write("Test Created in Extent Report");
             Browser.OpenBrowser(ConfigInitialization.GetExecutionBrowser());
+            EyeHelper.BeforeEach(ConfigInitialization.GetBatchName());
+            EyeHelper.eyes.Open(DriverContext.Driver,ConfigInitialization.GetApplicationName(), TestContext.CurrentContext.Test.Name);
             Browser.GoToUrl(ConfigInitialization.GetAppUrl()); 
             LogHelper.Write("Test Initialization Start");
             Thread.Sleep(TimeSpan.FromSeconds(10));
@@ -63,6 +66,7 @@ namespace FrameWork.Base
         { LogHelper.Write("After Test Execution");
             try
             {
+               
                 var status = TestContext.CurrentContext.Result.Outcome.Status;
                 var stacktrace = TestContext.CurrentContext.Result.StackTrace;
                 var errorMessage = "<pre>" + TestContext.CurrentContext.Result.Message + "</pre>";
@@ -88,6 +92,8 @@ namespace FrameWork.Base
             }
             finally
             {
+                EyeHelper.AfterEach();
+                EyeHelper.eyes.CloseAsync();
                 ExtentReportsHelper.Close();
                 DriverContext.Driver.Close();
             }
@@ -96,6 +102,7 @@ namespace FrameWork.Base
         public void CloseAll()
         {
             LogHelper.Write("Executing One time Tear down");
+          
             try
             {
                 DriverContext.Driver.Close();
@@ -107,6 +114,9 @@ namespace FrameWork.Base
             }
             finally
             {
+              
+                EyeHelper.eyes.AbortIfNotClosed();
+
                 DriverContext.Driver.Dispose();
                 LogHelper.FlushLogFiles();
             }

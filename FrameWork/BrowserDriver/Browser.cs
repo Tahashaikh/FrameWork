@@ -79,9 +79,10 @@ namespace FrameWork.BrowserDriver
                 case "Chrome":
                     try
                     {
-                        ChromeOptions options = new ChromeOptions();
+                 /*       ChromeOptions options = new ChromeOptions();
                         options.AddArgument("no-sandbox");
-                        DriverContext.Driver = new ChromeDriver(ChromeDriverService.CreateDefaultService(), options, TimeSpan.FromSeconds(120));
+                        DriverContext.Driver = new ChromeDriver(ChromeDriverService.CreateDefaultService(), options, TimeSpan.FromSeconds(120));*/
+                        DriverContext.Driver = new ChromeDriver();
                         DriverContext.Browser = new Browser(DriverContext.Driver);
                         LogHelper.Write("Browser Initialize Success " + BrowserType);
                     }
