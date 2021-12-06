@@ -55,7 +55,7 @@ namespace FrameWork.Base
             LogHelper.Write("Test Created in Extent Report");
             Browser.OpenBrowser(ConfigInitialization.GetExecutionBrowser());
             EyeHelper.BeforeEach(ConfigInitialization.GetBatchName());
-            EyeHelper.eyes.Open(DriverContext.Driver,ConfigInitialization.GetApplicationName(), TestContext.CurrentContext.Test.Name);
+            EyeHelper.eyes.Open(DriverContext.Driver, ConfigInitialization.GetApplicationName(), TestContext.CurrentContext.Test.Name);
             Browser.GoToUrl(ConfigInitialization.GetAppUrl()); 
             LogHelper.Write("Test Initialization Start");
             Thread.Sleep(TimeSpan.FromSeconds(10));
@@ -114,7 +114,8 @@ namespace FrameWork.Base
             }
             finally
             {
-              
+                
+               
                 EyeHelper.eyes.AbortIfNotClosed();
 
                 DriverContext.Driver.Dispose();

@@ -41,7 +41,13 @@ namespace FrameWork.Helper
             eyes.SetConfiguration(config);
 
         }
+
+        public static void EyeCheckWindow(string name)
+        {
+            eyes.Check(Target.Window().Fully().WithName(name));
+        }
     
+
         public static void AfterEach()
         {
 
